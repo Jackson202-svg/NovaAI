@@ -1,0 +1,3 @@
+# Cloud
+
+Cloud deployment templates.
