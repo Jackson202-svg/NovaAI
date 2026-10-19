@@ -1,21 +1,21 @@
 import express from 'express';
-import { requireAuth } from '../middleware/auth';
-import { apiRateLimiter, authRateLimiter } from '../middleware/rateLimit';
-import { validate } from '../middleware/validate';
-import { loginSchema, signupSchema } from '../validators/authValidators';
-import { chatRequestSchema } from '../validators/authValidators';
-import { loginController, signupController, refreshController } from './authController';
-import { chatController } from './chatController';
+import { apiRateLimiter } from '../middleware/rateLimit.js';
+import { validate } from '../middleware/validate.js';
+import { signupController, loginController, refreshController } from '../controllers/authController.js';
+import { signupSchema, loginSchema } from '../validators/authValidators.js';
+import { requireAuth } from '../middleware/auth.js';
+import { chatController } from '../controllers/chatController.js';
+import { chatRequestSchema } from '../validators/authValidators.js';
 
 const router = express.Router();
 
 router.get('/health', (_req, res) => {
-  res.status(200).json({ ok: true, service: 'novaai-auth' });
+  res.status(200).json({ success: true, service: 'novaai-auth', status: 'ok' });
 });
 
-router.post('/signup', authRateLimiter, validate(signupSchema), signupController);
-router.post('/login', authRateLimiter, validate(loginSchema), loginController);
-router.post('/refresh', authRateLimiter, refreshController);
+router.post('/signup', apiRateLimiter, validate(signupSchema), signupController);
+router.post('/login', apiRateLimiter, validate(loginSchema), loginController);
+router.post('/refresh', apiRateLimiter, refreshController);
 router.post('/chat', apiRateLimiter, requireAuth, validate(chatRequestSchema), chatController);
 
 export default router;

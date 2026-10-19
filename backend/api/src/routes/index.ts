@@ -1,8 +1,9 @@
 import express from 'express';
-import { createHealthResponse } from '../validators/authValidators';
 
 const router = express.Router();
 
-router.get('/health', createHealthResponse);
+router.get('/health', (_req, res) => {
+  res.status(200).json({ success: true, service: 'novaai-api', status: 'ok' });
+});
 
 export default router;

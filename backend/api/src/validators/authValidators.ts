@@ -1,4 +1,3 @@
-import type { Request, Response } from 'express';
 import { z } from 'zod';
 
 export const signupSchema = z.object({
@@ -16,19 +15,12 @@ export const chatRequestSchema = z.object({
   message: z.string().min(1).max(20000),
   conversationId: z.string().optional(),
   model: z.string().optional(),
-  context: z.array(
-    z.object({
-      role: z.enum(['user', 'assistant', 'system']),
-      content: z.string(),
-    }),
-  ).optional(),
+  context: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'assistant', 'system']),
+        content: z.string(),
+      }),
+    )
+    .optional(),
 });
-
-export const createHealthResponse = (_req: Request, res: Response): void => {
-  res.status(200).json({
-    success: true,
-    message: 'NovaAI API is online',
-    service: 'backend/api',
-    timestamp: new Date().toISOString(),
-  });
-};

@@ -1,4 +1,3 @@
-import type { Request, Response } from 'express';
 import { z } from 'zod';
 
 export const chatMessageSchema = z.object({
@@ -14,10 +13,3 @@ export const chatMessageSchema = z.object({
     )
     .optional(),
 });
-
-export const chatHealthCheck = (_req: Request, res: Response): void => {
-  res.status(200).json({
-    success: true,
-    message: 'Chat service is ready',
-  });
-};
